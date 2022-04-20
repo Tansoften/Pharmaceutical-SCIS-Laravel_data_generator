@@ -10,8 +10,6 @@ class ConsumptionSeeder extends Seeder
 {
     private $min_consumption;
     private $max_consumption;
-    private $min_drugs_application;
-    private $max_drugs_application;
     /**
      * Run the database seeds.
      *
@@ -20,7 +18,7 @@ class ConsumptionSeeder extends Seeder
     public function run()
     {
         //What should be changing
-        $year = 2015;
+        $year = 2016;
         //Choose your customer id
         $customer_id = 1;
 
@@ -45,27 +43,25 @@ class ConsumptionSeeder extends Seeder
         $this->min_consumption = 0;
         $this->max_consumption = 0;
         
-        $this->min_drugs_application = 100;
-        $this->max_drugs_application = 1000;
-        for($customers_count = 1; $customers_count<=5; $customers_count++){
+
             for($month = 1; $month<=12; $month++){
                 $quantity = 0;
                 foreach($products as $product){
                     if($product->ven_status_id != "N"){
-                        $this->fillConsumption($year, $month, $product, $customers_count);
+                        $this->fillConsumption($year, $month, $product, $customers_id);
                     }
                     else if($product->ven_status_id == "N" && rand()%3 == 0){
-                        $this->fillConsumption($year, $month, $product, $customers_count);
+                        $this->fillConsumption($year, $month, $product, $customers_id);
                     }
                 }
             }
-        }
+
 
     
     }
 
     private function fillConsumption($year, $month, $product,$customer_id){
-        $date = date_create(strval($year)."-".strval($month));
+        $date = date_create(strval($year)."-".$month."-".cal_days_in_month(CAL_GREGORIAN,$month,$year)-mt_rand(0,4));
 
         //fill consumption
         if($this->isOrderFullfilled($year, $month,$product)){
@@ -85,14 +81,10 @@ class ConsumptionSeeder extends Seeder
     private function isOrderFullfilled($year,$month,$product){
         $remainder = rand()%100;
         if($year == 2015){
-            if($product->drugs_application_id  == 19){
-                $this -> min_consumption = $this->min_drugs_application;
-                $this->max_consumption = $this->max_drugs_application;
-            }
-            else{
-                $this->min_consumption = $this->min_made_consumed(150000000);
-                $this->max_consumption = $this->max_made_consumed(160533362);
-            }            
+
+                $this->min_consumption = $this->min_made_consumed(150000000, $product);
+                $this->max_consumption = $this->max_made_consumed(160533362, $product);
+                      
             if($month <4 && $remainder < 57){
                 return true;
             }
@@ -106,14 +98,10 @@ class ConsumptionSeeder extends Seeder
         }
 
         else if($year == 2016){
-            if($product->drugs_application_id  == 19){
-                $this -> min_consumption = $this->min_drugs_application;
-                $this->max_consumption = $this->max_drugs_application;
-            }
-            else{
-                 $this->min_consumption = $this->min_made_consumed(100000000);
-                 $this->max_consumption = $this->max_made_consumed(126440444);
-            } 
+
+                 $this->min_consumption = $this->min_made_consumed(100000000, $product);
+                 $this->max_consumption = $this->max_made_consumed(126440444, $product);
+            
             if($month <4 && $remainder < 70){
                 return true;
             }
@@ -130,14 +118,10 @@ class ConsumptionSeeder extends Seeder
         }
 
         else if($year == 2017){
-            if($product->drugs_application_id  == 19){
-                $this -> min_consumption = $this->min_drugs_application;
-                $this->max_consumption = $this->max_drugs_application;
-            }
-            else{
-                $this->min_consumption = $this->min_made_consumed(150000000);
-                $this->max_consumption = $this->max_made_consumed(1724413432);
-            }
+ 
+                $this->min_consumption = $this->min_made_consumed(150000000, $product);
+                $this->max_consumption = $this->max_made_consumed(1724413432, $product);
+            
             if(($month <4 || $month > 9) && $remainder < 57){
                 return true;
             }
@@ -147,31 +131,15 @@ class ConsumptionSeeder extends Seeder
             return false;
         }
         else if($year == 2018){
-            if($product->drugs_application_id  == 19){
-                $this -> min_consumption = $this->min_drugs_application;
-                $this -> max_consumption = $this->max_drugs_application;
-            }
-            else{
-                $this->min_consumption = $this->min_made_consumed(250000000);
-                $this->max_consumption = $this->max_made_consumed(251389265);
-            }
-            
-            
-
+  
+                $this->min_consumption = $this->min_made_consumed(250000000, $product);
+                $this->max_consumption = $this->max_made_consumed(251389265, $product);
             return $this->makeDynamicOrder($remainder);
         } 
         else if($year == 2019){
-            if($product->drugs_application_id  == 19){
-                $this -> min_consumption = $min_drugs_application;
-                $this->max_consumption = $max_drugs_application;
-            }
-            else{
-                 $this->min_consumption = $this->min_made_consumed(200000000);
-                 $this->max_consumption = $this->max_made_consumed(235352238);
-            }
-           
-            
-            
+  
+                 $this->min_consumption = $this->min_made_consumed(200000000, $product);
+                 $this->max_consumption = $this->max_made_consumed(235352238, $product); 
             return $this->makeDynamicOrder($remainder);
         }
     }
@@ -208,13 +176,23 @@ class ConsumptionSeeder extends Seeder
         return $random;
     }
 
-    private function min_made_consumed($min_sales){
-        $min_made = $min_sales/(4*3*312*24);
+    private function min_made_consumed($min_sales, $product){
+        if($product->drugs_application_id  == 19){
+            $min_made = 100;
+        }
+        else{
+            $min_made = $min_sales/(4*3*312*24);
+        }
         return $min_made;
     }
 
-    private function max_made_consumed($max_sales){
-        $max_made = $max_sales/(4*3*312*24);
+    private function max_made_consumed($max_sales, $product){
+        if($product->drugs_application_id  == 19){
+            $max_made = $max_sales/(4*3*312*337);
+        }
+        else{
+            $max_made = $max_sales/(4*3*312*24);
+        }
         return $max_made;
     }
 }
