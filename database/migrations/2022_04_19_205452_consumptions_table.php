@@ -16,11 +16,9 @@ return new class extends Migration
         Schema::create('consumptions', function(Blueprint $table){
             $table->id();
             $table->integer('quantity');
-            $table->timestamp('date');
-            $table->string('product_id', 20);
-            $table->bigInteger('customer_id');
-            $table->foreign('product_id')->references('item_code')->on('product')->onDelete(null)->onUpdate('cascade');
-            $table->foreign('customer_id')->references('id')->on('customers');
+            // $table->timestamps();
+            $table->string('product_id',20);
+            $table->bigInteger('customer_id',20);
         });
     }
 
