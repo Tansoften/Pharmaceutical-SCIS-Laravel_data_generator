@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('consumptions', function(Blueprint $table){
             $table->id();
             $table->integer('quantity');
-            // $table->timestamps();
-            $table->string('product_id',20);
-            $table->bigInteger('customer_id',20);
+            $table->date('date_recorded');
+            $table->bigInteger('product_id');
+            $table->bigInteger('customer_id');
         });
     }
 
