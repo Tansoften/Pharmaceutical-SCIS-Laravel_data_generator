@@ -72,7 +72,7 @@ class ConsumptionSeeder extends Seeder
     }
 
     private function startSeeding($customer_id, $products){
-        for($year =2001; $year<=2014; $year++){
+        for($year =2015; $year<=2019; $year++){
             for($month = 1; $month<=12; $month++){
                 $quantity = 0;
                 foreach($products as $product){
