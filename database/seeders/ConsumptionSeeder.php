@@ -60,7 +60,7 @@ class ConsumptionSeeder extends Seeder
     {
         $customer_id = 5;
 
-        $products = DB::select('select *from product');
+        $products = DB::select('select *from products');
 
         $this->min_consumption = 1;
         $this->max_consumption = 0;

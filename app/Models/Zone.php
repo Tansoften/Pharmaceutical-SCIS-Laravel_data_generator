@@ -5,14 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Consumption extends Model
+class Zone extends Model
 {
     use HasFactory;
     protected $fillable = [
         'id',
-        'quantity',
-        'date_recorded',
-        'product_id',
-        'customer_id',
+        'name',
     ];
 }
