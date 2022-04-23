@@ -13,13 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        // Schema::create('consumptions', function(Blueprint $table){
-        //     $table->id();
-        //     $table->integer('quantity');
-        //     $table->date('date_recorded');
-        //     $table->bigInteger('product_id');
-        //     $table->bigInteger('customer_id');
-        // });
+        Schema::create('products', function (Blueprint $table) {
+            $table->id();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -29,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('products');
     }
 };

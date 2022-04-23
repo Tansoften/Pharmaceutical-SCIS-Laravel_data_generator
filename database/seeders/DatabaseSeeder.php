@@ -18,7 +18,9 @@ class DatabaseSeeder extends Seeder
 
         
         $this->call([
-            ConsumptionSeeder::class
+            //ConsumptionSeeder::class
+            DWConsumptionsSeeder::class
+            //DimGroupSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

@@ -5,17 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Models\Customer;
+
 class Consumption extends Model
 {
     use HasFactory;
-
-    public $timestamps = false;
-
     protected $fillable = [
         'id',
         'quantity',
-       // 'date',
+        'date_recorded',
         'product_id',
-        'customer_id'
+        'customer_id',
     ];
+
+    public function customer(){
+        return $this->hasOne(Customer::class, );
+    }
 }
