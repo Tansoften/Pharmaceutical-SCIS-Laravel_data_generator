@@ -20,7 +20,7 @@ class ConsumptionSeeder extends Seeder
         //What should be changing
         $year = 2016;
         //Choose your customer id
-        $customer_id = 1;
+        $customer_id = 3;
 
         $years_number = 1;
 
@@ -48,10 +48,10 @@ class ConsumptionSeeder extends Seeder
                 $quantity = 0;
                 foreach($products as $product){
                     if($product->ven_status_id != "N"){
-                        $this->fillConsumption($year, $month, $product, $customers_id);
+                        $this->fillConsumption($year, $month, $product, $customer_id);
                     }
                     else if($product->ven_status_id == "N" && rand()%3 == 0){
-                        $this->fillConsumption($year, $month, $product, $customers_id);
+                        $this->fillConsumption($year, $month, $product, $customer_id);
                     }
                 }
             }
@@ -74,7 +74,7 @@ class ConsumptionSeeder extends Seeder
             'quantity' => $quantity,
             'product_id' => $product->item_code,
             'customer_id' => $customer_id,
-            'created_at' => $date,
+            'date_recorded' => $date,
         ]);
     }
 
